@@ -12,7 +12,6 @@ namespace Vue.Models
 
     public class Bomchecklist
     {
-        [Key]
         public string masp_1 { get; set; }
 
         public string? tensp { get; set; }

@@ -60,6 +60,11 @@
                 ></Column>
                 <Column field="TENHH" header="Tên sản phẩm" sortable></Column>
                 <Column field="MALO_GOC" header="Số lô" sortable></Column>
+                <Column field="COLO_GOC" header="Cỡ lô" sortable>
+                  <template #body="{ data }">
+                    {{ formatNumber(data.COLO_GOC || 0, 0) }}
+                  </template></Column
+                >
                 <Column field="SOLUONG_NHAP" header="Số lượng" sortable>
                   <template #body="{ data }">
                     {{ formatNumber(data.SOLUONG_NHAP || 0, 0) }}

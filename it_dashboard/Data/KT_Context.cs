@@ -24,7 +24,6 @@ namespace Vue.Data
         public DbSet<KhachhangModel> KhachhangModel { get; set; }
         public DbSet<RawDataModel> RawDataModel { get; set; }
         public DbSet<TonkhoModel> TonkhoModel { get; set; }
-        public DbSet<Tinhtrangsanpham> Tinhtrangsanpham { get; set; }
         public DbSet<TBL_DANHMUCPHANLOAIKHACHHANGModel> TBL_DANHMUCPHANLOAIKHACHHANGModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

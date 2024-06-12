@@ -24,6 +24,10 @@ namespace Vue.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Tinhtrangsanpham>()
+        .HasKey(p => new { p.MAHH_GOC_1, p.MALO_GOC, p.COLO_GOC });
+            modelBuilder.Entity<Bomchecklist>()
+       .HasKey(p => new { p.masp_1, p.tensp, p.dangbaoche, p.dangdonggoi });
         }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder builder)
