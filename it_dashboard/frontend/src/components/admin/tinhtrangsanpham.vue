@@ -45,7 +45,10 @@
                 filterDisplay="menu"
               >
                 <template #header>
-                  <div class="d-flex justify-content-end">
+                  <div class="d-flex justify-content-end align-items-center">
+                    <span class="mr-2"
+                      >Tổng số: {{ tinhtrangsanpham.length }}</span
+                    >
                     <InputText
                       v-model="filters['global'].value"
                       placeholder="Tìm kiếm"
@@ -57,21 +60,69 @@
                   field="MAHH_GOC_1"
                   header="Mã sản phẩm"
                   sortable
+                  :showFilterMatchModes="false"
+                >
+                  <template #filter="{ filterModel, filterCallback }">
+                    <InputText
+                      v-model="filterModel.value"
+                      type="text"
+                      @keydown.enter="filterCallback()"
+                    /> </template
                 ></Column>
-                <Column field="TENHH" header="Tên sản phẩm" sortable></Column>
-                <Column field="MALO_GOC" header="Số lô" sortable></Column>
-                <Column field="COLO_GOC" header="Cỡ lô" sortable>
+                <Column
+                  field="TENHH"
+                  header="Tên sản phẩm"
+                  sortable
+                  :showFilterMatchModes="false"
+                >
+                  <template #filter="{ filterModel, filterCallback }">
+                    <InputText
+                      v-model="filterModel.value"
+                      type="text"
+                      @keydown.enter="filterCallback()"
+                    /> </template
+                ></Column>
+                <Column
+                  field="MALO_GOC"
+                  header="Số lô"
+                  sortable
+                  :showFilterMatchModes="false"
+                >
+                  <template #filter="{ filterModel, filterCallback }">
+                    <InputText
+                      v-model="filterModel.value"
+                      type="text"
+                      @keydown.enter="filterCallback()"
+                    /> </template
+                ></Column>
+                <Column
+                  field="COLO_GOC"
+                  header="Cỡ lô"
+                  sortable
+                  :showFilterMatchModes="false"
+                >
                   <template #body="{ data }">
                     {{ formatNumber(data.COLO_GOC || 0, 0) }}
-                  </template></Column
-                >
+                  </template>
+                  <template #filter="{ filterModel, filterCallback }">
+                    <InputText
+                      v-model="filterModel.value"
+                      type="text"
+                      @keydown.enter="filterCallback()"
+                    /> </template
+                ></Column>
                 <Column field="SOLUONG_NHAP" header="Số lượng" sortable>
                   <template #body="{ data }">
                     {{ formatNumber(data.SOLUONG_NHAP || 0, 0) }}
                     {{ data.DVT_NHAP }}
                   </template>
                 </Column>
-                <Column field="HOANTHANH" header="Trạng thái" sortable>
+                <Column
+                  field="HOANTHANH"
+                  header="Trạng thái"
+                  sortable
+                  :showFilterMatchModes="false"
+                >
                   <template #body="{ data }">
                     <template v-if="data.HOANTHANH == 1">
                       <i class="far fa-check-circle text-success"></i> Hoàn
@@ -81,6 +132,21 @@
                       <i class="far fa-times-circle text-danger"></i> Chưa hoàn
                       thành
                     </template>
+                  </template>
+                  <template #filter="{ filterModel, filterCallback }">
+                    <div style="width: 300px">
+                      <SelectButton
+                        v-model="filterModel.value"
+                        :options="[
+                          { name: 'Hoàn thành', value: true },
+                          { name: 'Chưa hoàn thành', value: false },
+                        ]"
+                        optionLabel="name"
+                        optionValue="value"
+                        @change="filterCallback()"
+                        aria-labelledby="basic"
+                      />
+                    </div>
                   </template>
                 </Column>
                 <Column field="NGAYDAUTIEN" header="Ngày bắt đầu" sortable>
@@ -114,6 +180,7 @@
 import { onMounted, ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import SelectButton from "primevue/selectbutton";
 import BlockUI from "primevue/blockui";
 // import IconField from 'primevue/iconfield';
 // import InputIcon from 'primevue/inputicon';
@@ -132,12 +199,20 @@ const waiting = ref();
 const tinhtrangsanpham = ref([]);
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  MAHH_GOC_1: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  TENHH: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  MALO_GOC: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  COLO_GOC: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  HOANTHANH: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 const load_tinhtrangsanpham = () => {
   waiting.value = true;
   Api.tinhtrangsanpham({ dates: dates.value }).then((res) => {
     waiting.value = false;
-    tinhtrangsanpham.value = res.data;
+    tinhtrangsanpham.value = res.data.map((item) => {
+      item.HOANTHANH = item.HOANTHANH ? true : false;
+      return item;
+    });
   });
 };
 onMounted(() => {

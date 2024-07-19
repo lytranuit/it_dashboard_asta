@@ -18,7 +18,7 @@ namespace Vue.Models
         public string MALO_GOC { get; set; }
         public string? DVT { get; set; }
         public decimal COLO_GOC { get; set; }
-        public bool? HOANTHANH { get; set; }
+        public bool? HOANTHANH { get; set; } = false;
         public decimal? SOLUONG_NHAP { get; set; }
         public string? DVT_NHAP { get; set; }
 

@@ -10,13 +10,23 @@
           <b>Thời gian</b>
           <div>
             <div class="d-flex align-items-center" style="gap: 10px">
-              <select class="form-control" style="width: 150px" v-model="qui">
+              <select
+                class="form-control"
+                style="width: 150px"
+                v-model="qui"
+                @change="load_bomchecklist"
+              >
                 <option value="1">Quí 1</option>
                 <option value="2">Quí 2</option>
                 <option value="3">Quí 3</option>
                 <option value="4">Quí 4</option>
               </select>
-              <select class="form-control" style="width: 150px" v-model="nam">
+              <select
+                class="form-control"
+                style="width: 150px"
+                v-model="nam"
+                @change="load_bomchecklist"
+              >
                 <option v-for="item of list_nam" :value="item" :key="item">
                   {{ item }}
                 </option>
@@ -48,7 +58,8 @@
                 filterDisplay="menu"
               >
                 <template #header>
-                  <div class="d-flex justify-content-end">
+                  <div class="d-flex justify-content-end align-items-center">
+                    <span class="mr-2">Tổng số: {{ bomchecklist.length }}</span>
                     <InputText
                       v-model="filters['global'].value"
                       placeholder="Tìm kiếm"
@@ -56,15 +67,58 @@
                     />
                   </div>
                 </template>
-                <Column field="masp_1" header="Mã sản phẩm" sortable></Column>
-                <Column field="tensp" header="Tên sản phẩm" sortable></Column>
+                <Column
+                  field="masp_1"
+                  header="Mã sản phẩm"
+                  sortable
+                  :showFilterMatchModes="false"
+                >
+                  <template #filter="{ filterModel, filterCallback }">
+                    <InputText
+                      v-model="filterModel.value"
+                      type="text"
+                      @keydown.enter="filterCallback()"
+                    /> </template
+                ></Column>
+                <Column
+                  field="tensp"
+                  header="Tên sản phẩm"
+                  sortable
+                  :showFilterMatchModes="false"
+                >
+                  <template #filter="{ filterModel, filterCallback }">
+                    <InputText
+                      v-model="filterModel.value"
+                      type="text"
+                      @keydown.enter="filterCallback()"
+                    /> </template
+                ></Column>
                 <Column
                   field="dangbaoche"
                   header="Dạng bào chế"
                   sortable
+                  :showFilterMatchModes="false"
+                >
+                  <template #filter="{ filterModel, filterCallback }">
+                    <InputText
+                      v-model="filterModel.value"
+                      type="text"
+                      @keydown.enter="filterCallback()"
+                    /> </template
                 ></Column>
-                <Column field="dangdonggoi" header="Dạng đóng gói" sortable>
-                </Column>
+                <Column
+                  field="dangdonggoi"
+                  header="Dạng đóng gói"
+                  sortable
+                  :showFilterMatchModes="false"
+                >
+                  <template #filter="{ filterModel, filterCallback }">
+                    <InputText
+                      v-model="filterModel.value"
+                      type="text"
+                      @keydown.enter="filterCallback()"
+                    /> </template
+                ></Column>
                 <Column field="hoanthanh" header="Hoàn thành" sortable>
                   <template #body="{ data }">
                     <span>{{ data.hoanthanh }}%</span>
@@ -136,6 +190,10 @@ const waiting = ref();
 const bomchecklist = ref([]);
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  masp_1: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  tensp: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  dangbaoche: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  dangdonggoi: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 const load_bomchecklist = () => {
   waiting.value = true;

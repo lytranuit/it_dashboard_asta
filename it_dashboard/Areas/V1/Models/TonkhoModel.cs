@@ -17,6 +17,7 @@ namespace Vue.Models
 
         public string? TENHH { get; set; }
         public string? MANHOM { get; set; }
+        public string? TENNHOM { get; set; }
         public string? DVT { get; set; }
         public string? SL_TONCUOIKY { get; set; }
 
