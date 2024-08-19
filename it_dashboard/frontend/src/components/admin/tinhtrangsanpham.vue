@@ -43,6 +43,7 @@
                 :globalFilterFields="['MAHH_GOC_1', 'TENHH']"
                 v-model:filters="filters"
                 filterDisplay="menu"
+                @filter="tong"
               >
                 <template #header>
                   <div class="d-flex justify-content-end align-items-center">
@@ -50,15 +51,17 @@
                       >Tổng số: {{ tinhtrangsanpham.length }}</span
                     >
                     <InputText
-                      v-model="filters['global'].value"
+                      v-model="search"
                       placeholder="Tìm kiếm"
                       class="p-inputtext-sm"
+                      @change="load_tinhtrangsanpham()"
                     />
                   </div>
                 </template>
                 <Column
                   field="MAHH_GOC_1"
                   header="Mã sản phẩm"
+                  footer="Tổng"
                   sortable
                   :showFilterMatchModes="false"
                 >
@@ -98,6 +101,7 @@
                 <Column
                   field="COLO_GOC"
                   header="Cỡ lô"
+                  :footer="formatNumber(tong_colo || 0, 0)"
                   sortable
                   :showFilterMatchModes="false"
                 >
@@ -197,6 +201,8 @@ const dates = ref([
 ]);
 const waiting = ref();
 const tinhtrangsanpham = ref([]);
+const tong_colo = ref();
+const search = ref();
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   MAHH_GOC_1: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -207,13 +213,21 @@ const filters = ref({
 });
 const load_tinhtrangsanpham = () => {
   waiting.value = true;
-  Api.tinhtrangsanpham({ dates: dates.value }).then((res) => {
-    waiting.value = false;
-    tinhtrangsanpham.value = res.data.map((item) => {
-      item.HOANTHANH = item.HOANTHANH ? true : false;
-      return item;
-    });
-  });
+  Api.tinhtrangsanpham({ dates: dates.value, search: search.value }).then(
+    (res) => {
+      waiting.value = false;
+      // tong_colo.value = res.tong_colo;
+      tinhtrangsanpham.value = res.data.map((item) => {
+        item.HOANTHANH = item.HOANTHANH ? true : false;
+        return item;
+      });
+    }
+  );
+};
+const tong = (da) => {
+  var filteredValue = da.filteredValue;
+  tong_colo.value = filteredValue.reduce((a, b) => a + b.COLO_GOC, 0);
+  console.log(tong_colo.value);
 };
 onMounted(() => {
   load_tinhtrangsanpham();

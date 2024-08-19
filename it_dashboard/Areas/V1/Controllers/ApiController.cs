@@ -621,7 +621,7 @@ namespace it_template.Areas.V1.Controllers
             var data = _ktcontext.TonkhoModel.FromSqlRaw($"{sqla}").ToList().OrderByDescending(d => d.soluong_ton).Take(limit).ToList();
             return Json(new { data = data });
         }
-        public async Task<JsonResult> tinhtrangsanpham(List<DateTime> dates)
+        public async Task<JsonResult> tinhtrangsanpham(List<DateTime> dates, string search)
         {
             var current = DateTime.Now;
             if (dates == null)
@@ -645,9 +645,14 @@ namespace it_template.Areas.V1.Controllers
             var tungay = dates[0].ToString("yyyy-MM-dd");
             var denngay = dates[1].ToString("yyyy-MM-dd");
             var sqla = $"EXECUTE BI_DODANG_HOANTHANH @tungay='{tungay}',@dengay='{denngay}' ";
-            Console.WriteLine(sqla);
+            //Console.WriteLine(sqla);
             var data = _qlsxcontext.Tinhtrangsanpham.FromSqlRaw($"{sqla}").ToList().OrderByDescending(d => d.HOANTHANH).ToList();
-            return Json(new { success = true, data = data }, new System.Text.Json.JsonSerializerOptions()
+            if (search != null && search != "")
+            {
+                data = data.Where(d => d.MAHH_GOC_1.Contains(search) || d.TENHH.Contains(search) || d.MALO_GOC.Contains(search)).ToList();
+            }
+            var tong_colo = data.Sum(d => d.COLO_GOC);
+            return Json(new { success = true, data = data, tong_colo }, new System.Text.Json.JsonSerializerOptions()
             {
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 ReferenceHandler = ReferenceHandler.IgnoreCycles,
