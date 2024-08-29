@@ -618,7 +618,7 @@ namespace it_template.Areas.V1.Controllers
             var tungay = current.ToString("yyyy-MM-dd");
             var sqla = $"EXECUTE laythongtintonkho_tatca_tatca @thang = {thang}, @nam = {nam}, @MAHH = '',@tungay='{tungay}',@soluong=0 ";
             Console.WriteLine(sqla);
-            var data = _ktcontext.TonkhoModel.FromSqlRaw($"{sqla}").ToList().OrderByDescending(d => d.soluong_ton).Take(limit).ToList();
+            var data = _ktcontext.TonkhoModel.FromSqlRaw($"{sqla}").ToList().Where(d => d.MANHOM != "QT").OrderByDescending(d => d.soluong_ton).Take(limit).ToList();
             return Json(new { data = data });
         }
         public async Task<JsonResult> tinhtrangsanpham(List<DateTime> dates, string search)
