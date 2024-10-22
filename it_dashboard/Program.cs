@@ -38,7 +38,8 @@ namespace Vue
             var connectionString = builder.Configuration.GetConnectionString("ItConnection") ?? throw new InvalidOperationException("Connection string 'ItConnection' not found.");
             var KT = builder.Configuration.GetConnectionString("KT") ?? throw new InvalidOperationException("Connection string 'KT' not found.");
 			var QLSX = builder.Configuration.GetConnectionString("QLSX") ?? throw new InvalidOperationException("Connection string 'QLSX' not found.");
-           
+            var NHANSU = builder.Configuration.GetConnectionString("NHANSU") ?? throw new InvalidOperationException("Connection string 'NHANSU' not found.");
+
 
             builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             builder.Services.AddControllersWithViews().AddJsonOptions(x =>
@@ -61,6 +62,9 @@ namespace Vue
 
             builder.Services.AddDbContext<QLSX_Context>(options =>
              options.UseSqlServer(QLSX)
+             );
+            builder.Services.AddDbContext<NhansuContext>(options =>
+             options.UseSqlServer(NHANSU)
              );
             //builder.Services.AddScoped<ViewRender, ViewRender>();
 

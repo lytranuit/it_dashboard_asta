@@ -275,6 +275,7 @@ namespace it_template.Areas.V1.Controllers
             {
                 MAHH = group.Key.MAHH,
                 TENHH = group.First().TENHH,
+                dvt = group.First().DVT,
                 doanhthu = group.Sum(d => d.DOANHTHU),
                 soluong = group.Sum(d => d.SOLUONG)
             }).OrderByDescending(d => d.doanhthu).Take(limit).ToList();
@@ -548,6 +549,9 @@ namespace it_template.Areas.V1.Controllers
             return Json(new
             {
                 doanhthu = doanhthu
+            }, new System.Text.Json.JsonSerializerOptions()
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             });
         }
         [HttpPost]
@@ -676,11 +680,15 @@ namespace it_template.Areas.V1.Controllers
     {
         public string label { get; set; }
         public List<double> data { get; set; }
+        public bool fill { get; set; }
+        public string type { get; set; }
+        public string yAxisID { get; set; }
     }
     public class Chart1
     {
         public string sort { get; set; }
         public string label { get; set; }
         public double data { get; set; }
+        public double data_nv { get; set; }
     }
 }

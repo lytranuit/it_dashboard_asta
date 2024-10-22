@@ -286,14 +286,14 @@
                               <!--end tr-->
                             </thead>
                             <tbody>
-                              <tr v-for="tr of topsp">
+                              <tr v-for="tr of topsp" :key="tr">
                                 <td>
                                   <router-link :to="'chitiet?mahh=' + tr.mahh">
                                     {{ tr.tenhh }}
                                   </router-link>
                                 </td>
                                 <td>
-                                  {{ formatNumber(tr.soluong) }}
+                                  {{ formatNumber(tr.soluong) }} {{ tr.dvt }}
                                 </td>
                                 <td>{{ formatNumber(tr.doanhthu) }}</td>
                               </tr>
@@ -343,7 +343,7 @@
                               <!--end tr-->
                             </thead>
                             <tbody>
-                              <tr v-for="tr of topnhom">
+                              <tr v-for="tr of topnhom" :key="tr">
                                 <td>
                                   <router-link :to="'chitiet?nhom=' + tr.nhom">
                                     {{ tr.tennhom }}
@@ -428,7 +428,7 @@
                               <!--end tr-->
                             </thead>
                             <tbody>
-                              <tr v-for="tr of toptdv">
+                              <tr v-for="tr of toptdv" :key="tr">
                                 <td>
                                   {{ tr.matdv }}
                                 </td>
@@ -483,7 +483,7 @@
                               <!--end tr-->
                             </thead>
                             <tbody>
-                              <tr v-for="tr of toptinh">
+                              <tr v-for="tr of toptinh" :key="tr">
                                 <td>
                                   <router-link
                                     :to="'chitiet?tinh=' + tr.matinh"
@@ -542,7 +542,7 @@
                               <!--end tr-->
                             </thead>
                             <tbody>
-                              <tr v-for="tr of topkh">
+                              <tr v-for="tr of topkh" :key="tr">
                                 <td>
                                   <router-link :to="'chitiet?makh=' + tr.makh">
                                     {{ tr.makh }}
@@ -599,7 +599,7 @@
                               <!--end tr-->
                             </thead>
                             <tbody>
-                              <tr v-for="tr of tonkho">
+                              <tr v-for="tr of tonkho" :key="tr">
                                 <td>
                                   {{ tr.mahh }}
                                 </td>
@@ -637,6 +637,9 @@
     <TabPanel header="BOM CHECKLIST">
       <Bomchecklist></Bomchecklist>
     </TabPanel>
+    <TabPanel header="NHÂN SỰ">
+      <Nhansu></Nhansu>
+    </TabPanel>
   </TabView>
 
   <Loading :waiting="waiting"></Loading>
@@ -658,6 +661,7 @@ import BlockUI from "primevue/blockui";
 import Tonkho from "../components/admin/tonkho.vue";
 import Tinhtrangsanpham from "../components/admin/tinhtrangsanpham.vue";
 import Bomchecklist from "../components/admin/bomchecklist.vue";
+import Nhansu from "../components/admin/nhansu.vue";
 
 const listsort = ref([
   {

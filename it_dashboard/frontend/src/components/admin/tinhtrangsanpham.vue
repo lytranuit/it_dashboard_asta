@@ -227,7 +227,7 @@ const load_tinhtrangsanpham = () => {
 const tong = (da) => {
   var filteredValue = da.filteredValue;
   tong_colo.value = filteredValue.reduce((a, b) => a + b.COLO_GOC, 0);
-  console.log(tong_colo.value);
+  // console.log(tong_colo.value);
 };
 onMounted(() => {
   load_tinhtrangsanpham();
