@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using NuGet.Configuration;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Vue.Models
 {
-    [Table("tbl_department")]
+    [Table("department")]
     public class DepartmentModel
     {
         [Key]
@@ -18,5 +19,17 @@ namespace Vue.Models
         public DateTime? updated_at { get; set; }
 
         public DateTime? deleted_at { get; set; }
+
+        public virtual List<UserDepartmentModel>? list_users { get; set; }
+        [NotMapped]
+        public List<DepartmentModel>? children { get; set; }
+        [NotMapped]
+        public List<string> list_users_id
+        {
+            get
+            {
+                return list_users != null ? list_users.Select(x => x.user_id).ToList() : new List<string>();
+            }
+        }
     }
 }

@@ -66,7 +66,7 @@ namespace it_template.Areas.V1.Controllers
             }
             var data = salaryUser.GroupBy(d => new { year = d.salary.nam, month = d.salary.thang }).Select(group => new Chart1
             {
-                sort = group.Key.year + "-" + group.Key.month,
+                sort = $"{group.Key.year:D4}-{group.Key.month:D2}",
                 label = group.Key.month + "/" + group.Key.year,
                 data = (double)group.Sum(d => d.thuclanh),
                 data_nv = (double)group.Count()

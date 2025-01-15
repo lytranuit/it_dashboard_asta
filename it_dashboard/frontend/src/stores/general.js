@@ -11,12 +11,19 @@ export const useGeneral = defineStore("General", () => {
   const chucvu = ref([]);
   const department = ref([]);
   const shifts = ref([]);
+  const khuvuc = ref([]);
   const persondepartments = ref([]);
   const fetchCategory = () => {
     if (category.value.length) return;
     Api.category().then((res) => {
       category.value = res;
     });
+  }
+  const fetchKhuvuc = () => {
+    if (khuvuc.value.length) return;
+    // WHApi.khuvuc().then((res) => {
+    //   khuvuc.value = res;
+    // });
   }
   const fetchDepartment = () => {
     if (department.value.length) return;
@@ -76,6 +83,8 @@ export const useGeneral = defineStore("General", () => {
     fetchChucvu,
     fetchShifts,
     fetchPersonDepartments,
+    fetchKhuvuc,
+    khuvuc,
     persondepartments,
     shifts,
     category,

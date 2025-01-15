@@ -172,14 +172,12 @@ const chart = ref({
       A: {
         type: "linear",
         position: "left",
+        min: 0,
       },
       B: {
         type: "linear",
         position: "right",
-        ticks: {
-          max: 1,
-          min: 0,
-        },
+        min: 0,
       },
     },
     height: 300,

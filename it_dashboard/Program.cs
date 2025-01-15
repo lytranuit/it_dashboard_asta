@@ -37,8 +37,9 @@ namespace Vue
 
             var connectionString = builder.Configuration.GetConnectionString("ItConnection") ?? throw new InvalidOperationException("Connection string 'ItConnection' not found.");
             var KT = builder.Configuration.GetConnectionString("KT") ?? throw new InvalidOperationException("Connection string 'KT' not found.");
-			var QLSX = builder.Configuration.GetConnectionString("QLSX") ?? throw new InvalidOperationException("Connection string 'QLSX' not found.");
+            var QLSX = builder.Configuration.GetConnectionString("QLSX") ?? throw new InvalidOperationException("Connection string 'QLSX' not found.");
             var NHANSU = builder.Configuration.GetConnectionString("NHANSU") ?? throw new InvalidOperationException("Connection string 'NHANSU' not found.");
+            var Buy = builder.Configuration.GetConnectionString("Buy") ?? throw new InvalidOperationException("Connection string 'Buy' not found.");
 
 
             builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -56,10 +57,13 @@ namespace Vue
               options.UseSqlServer(connectionString)
               );
 
-			builder.Services.AddDbContext<KT_Context>(options =>
-			 options.UseSqlServer(KT)
-			 );
+            builder.Services.AddDbContext<KT_Context>(options =>
+             options.UseSqlServer(KT)
+             );
 
+            builder.Services.AddDbContext<Buy_Context>(options =>
+             options.UseSqlServer(Buy)
+             );
             builder.Services.AddDbContext<QLSX_Context>(options =>
              options.UseSqlServer(QLSX)
              );

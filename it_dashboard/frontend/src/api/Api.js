@@ -7,6 +7,9 @@ export default {
       .get(`/v1/${resoure}/process`, { params: { id: id } })
       .then((res) => res.data);
   },
+  departments() {
+    return repository.get(`/v1/${resoure}/departments`).then((res) => res.data);
+  },
   list_PLKH() {
     return repository.get(`/v1/${resoure}/list_PLKH`).then((res) => res.data);
   },
@@ -24,6 +27,11 @@ export default {
   list_khachhang() {
     return repository
       .get(`/v1/${resoure}/list_khachhang`)
+      .then((res) => res.data);
+  },
+  khuvuc() {
+    return repository
+      .get(`/v1/${resoure}/khuvuc`)
       .then((res) => res.data);
   },
   list_khachhang_exception() {

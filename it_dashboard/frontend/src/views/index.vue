@@ -634,8 +634,15 @@
     <TabPanel header="TÌNH TRẠNG SẢN PHẨM">
       <Tinhtrangsanpham></Tinhtrangsanpham>
     </TabPanel>
-    <TabPanel header="BOM CHECKLIST">
+    <!-- <TabPanel header="BOM CHECKLIST">
       <Bomchecklist></Bomchecklist>
+    </TabPanel> -->
+    <TabPanel header="BOM">
+      <Bom></Bom>
+    </TabPanel>
+
+    <TabPanel header="MUA HÀNG">
+      <Muahang></Muahang>
     </TabPanel>
     <TabPanel header="NHÂN SỰ">
       <Nhansu></Nhansu>
@@ -662,6 +669,8 @@ import Tonkho from "../components/admin/tonkho.vue";
 import Tinhtrangsanpham from "../components/admin/tinhtrangsanpham.vue";
 import Bomchecklist from "../components/admin/bomchecklist.vue";
 import Nhansu from "../components/admin/nhansu.vue";
+import Bom from "../components/admin/bom.vue";
+import Muahang from "../components/admin/muahang.vue";
 
 const listsort = ref([
   {

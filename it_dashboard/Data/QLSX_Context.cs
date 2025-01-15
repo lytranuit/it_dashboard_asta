@@ -22,6 +22,12 @@ namespace Vue.Data
         public DbSet<Bomchecklist> Bomchecklist { get; set; }
 
 
+        public DbSet<BomModel> BomModel { get; set; }
+        public DbSet<BomThaytheModel> BomThaytheModel { get; set; }
+        public DbSet<PackageModel> PackageModel { get; set; }
+        public DbSet<ProductModel> ProductModel { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Tinhtrangsanpham>()
