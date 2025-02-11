@@ -659,7 +659,7 @@ namespace it_template.Areas.V1.Controllers
             var denngay = dates[1].ToString("yyyy-MM-dd");
             var sqla = $"EXECUTE BI_DODANG_HOANTHANH @tungay='{tungay}',@dengay='{denngay}' ";
             //Console.WriteLine(sqla);
-            var data = _qlsxcontext.Tinhtrangsanpham.FromSqlRaw($"{sqla}").ToList().OrderByDescending(d => d.HOANTHANH).ToList();
+            var data = _qlsxcontext.Tinhtrangsanpham.FromSqlRaw($"{sqla}").ToList().Where(d => d.COLO_GOC > 0).OrderByDescending(d => d.HOANTHANH).ToList();
             if (search != null && search != "")
             {
                 data = data.Where(d => d.MAHH_GOC_1.Contains(search) || d.TENHH.Contains(search) || d.MALO_GOC.Contains(search)).ToList();

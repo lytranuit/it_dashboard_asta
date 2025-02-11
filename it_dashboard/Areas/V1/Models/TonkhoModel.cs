@@ -20,6 +20,7 @@ namespace Vue.Models
         public string? TENNHOM { get; set; }
         public string? DVT { get; set; }
         public string? SL_TONCUOIKY { get; set; }
+        public decimal? SL_THUNG { get; set; }
 
         [NotMapped]
         public double? soluong_ton

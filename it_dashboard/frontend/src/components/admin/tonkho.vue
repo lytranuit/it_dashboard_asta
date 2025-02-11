@@ -85,6 +85,12 @@
                     {{ formatNumber(data.soluong_ton, 0) }} {{ data.dvt }}
                   </template>
                 </Column>
+
+                <Column field="sL_THUNG" header="Số thùng" sortable>
+                  <template #body="{ data }">
+                    {{ formatNumber(data.sL_THUNG, 2) }} Thùng
+                  </template>
+                </Column>
               </DataTable>
             </div>
             <!--end /div-->
