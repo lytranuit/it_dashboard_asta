@@ -7,6 +7,9 @@ export default {
       .get(`/v1/${resoure}/process`, { params: { id: id } })
       .then((res) => res.data);
   },
+  kho() {
+    return repository.get(`/v1/${resoure}/kho`).then((res) => res.data);
+  },
   departments() {
     return repository.get(`/v1/${resoure}/departments`).then((res) => res.data);
   },
@@ -221,13 +224,11 @@ export default {
       .then((res) => res.data);
   },
 
-  tonkho(limit) {
+  tonkho(params) {
     return repository
       .post(
         `/v1/${resoure}/tonkho`,
-        {
-          limit: limit,
-        },
+        params,
         {
           headers: {
             "Content-Type": "multipart/form-data",

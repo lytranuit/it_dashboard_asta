@@ -12,7 +12,14 @@ export const useGeneral = defineStore("General", () => {
   const department = ref([]);
   const shifts = ref([]);
   const khuvuc = ref([]);
+  const kho = ref([]);
   const persondepartments = ref([]);
+  const fetchKho = () => {
+    if (kho.value.length) return;
+    Api.kho().then((res) => {
+      kho.value = res;
+    });
+  }
   const fetchCategory = () => {
     if (category.value.length) return;
     Api.category().then((res) => {
@@ -84,6 +91,7 @@ export const useGeneral = defineStore("General", () => {
     fetchShifts,
     fetchPersonDepartments,
     fetchKhuvuc,
+    fetchKho,
     khuvuc,
     persondepartments,
     shifts,
@@ -93,6 +101,7 @@ export const useGeneral = defineStore("General", () => {
     area,
     loaihd,
     department,
-    chucvu
+    chucvu,
+    kho
   };
 });

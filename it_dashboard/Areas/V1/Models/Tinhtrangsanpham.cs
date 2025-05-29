@@ -12,6 +12,8 @@ namespace Vue.Models
 
     public class Tinhtrangsanpham
     {
+        [Key]
+        public Guid id { get; set; }
         public string MAHH_GOC_1 { get; set; }
 
         public string? TENHH { get; set; }

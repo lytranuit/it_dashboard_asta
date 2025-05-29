@@ -14,60 +14,29 @@
             </div> -->
             <div class="col-lg-2">
               <b>Tỉnh</b>
-              <TinhTreeSelect
-                :multiple="true"
-                v-model:modelValue="tinhs"
-                @close="refresh"
-              ></TinhTreeSelect>
+              <TinhTreeSelect :multiple="true" v-model:modelValue="tinhs" @close="refresh"></TinhTreeSelect>
             </div>
             <div class="col-lg-2">
               <b>Mã nhóm</b>
-              <ManhomTreeSelect
-                :multiple="true"
-                v-model:modelValue="nhoms"
-                @close="refresh"
-              >
+              <ManhomTreeSelect :multiple="true" v-model:modelValue="nhoms" @close="refresh">
               </ManhomTreeSelect>
             </div>
             <div class="col-lg-6">
               <b>Thời gian</b>
               <div>
-                <div
-                  class="d-flex align-items-center"
-                  style="gap: 10px"
-                  v-if="view == 'nam'"
-                >
-                  <select
-                    class="form-control"
-                    style="width: 150px"
-                    v-model="nam"
-                    @change="changeNam"
-                  >
+                <div class="d-flex align-items-center" style="gap: 10px" v-if="view == 'nam'">
+                  <select class="form-control" style="width: 150px" v-model="nam" @change="changeNam">
                     <option v-for="item of list_nam" :value="item" :key="item">
                       {{ item }}
                     </option>
                   </select>
-                  <button
-                    class="btn btn-primary"
-                    @click="view = 'tungaydenngay'"
-                  >
+                  <button class="btn btn-primary" @click="view = 'tungaydenngay'">
                     Từ ngày đến ngày
                   </button>
                 </div>
-                <div
-                  class="d-flex align-items-center"
-                  style="gap: 10px"
-                  v-if="view == 'tungaydenngay'"
-                >
-                  <Calendar
-                    v-model="dates"
-                    selectionMode="range"
-                    class="p-inputtext-sm w-100"
-                    :manualInput="true"
-                    dateFormat="dd/mm/yy"
-                    @hide="refresh"
-                    :maxDate="maxDate"
-                  />
+                <div class="d-flex align-items-center" style="gap: 10px" v-if="view == 'tungaydenngay'">
+                  <Calendar v-model="dates" selectionMode="range" class="p-inputtext-sm w-100" :manualInput="true"
+                    dateFormat="dd/mm/yy" @hide="refresh" :maxDate="maxDate" />
                   <button class="btn btn-primary" @click="view = 'nam'">
                     Năm
                   </button>
@@ -82,11 +51,7 @@
           <BlockUI :blocked="list_waiting.HomeBadge">
             <div class="card">
               <div class="card-body">
-                <span
-                  class="font-weight-bold"
-                  style="color: blue; font-size: 15px"
-                  >DOANH THU</span
-                >
+                <span class="font-weight-bold" style="color: blue; font-size: 15px">DOANH THU</span>
                 <h3 class="my-3">{{ formatNumber(thanhtien) }} VND</h3>
               </div>
               <!--end card-body-->
@@ -99,11 +64,7 @@
           <BlockUI :blocked="list_waiting.HomeBadge">
             <div class="card">
               <div class="card-body">
-                <span
-                  class="font-weight-bold"
-                  style="color: purple; font-size: 15px"
-                  >SỐ LƯỢNG BÁN RA</span
-                >
+                <span class="font-weight-bold" style="color: purple; font-size: 15px">SỐ LƯỢNG BÁN RA</span>
                 <h3 class="my-3">{{ formatNumber(soluong) }} SP</h3>
               </div>
               <!--end card-body-->
@@ -116,11 +77,7 @@
           <BlockUI :blocked="list_waiting.HomeBadge">
             <div class="card">
               <div class="card-body">
-                <span
-                  class="font-weight-bold"
-                  style="color: green; font-size: 15px"
-                  >SỐ LƯỢNG MÃ SẢN PHẨM BÁN RA</span
-                >
+                <span class="font-weight-bold" style="color: green; font-size: 15px">SỐ LƯỢNG MÃ SẢN PHẨM BÁN RA</span>
                 <h3 class="my-3">{{ formatNumber(soluongsp) }} SP</h3>
               </div>
               <!--end card-body-->
@@ -132,15 +89,8 @@
       </div>
       <div class="row">
         <div class="col-xl-12">
-          <draggable
-            v-model="listsort"
-            handle=".handle"
-            :group="{ name: 'people', pull: 'clone', put: false }"
-            ghost-class="ghost"
-            item-key="id"
-            class="row"
-            @end="onEnd"
-          >
+          <draggable v-model="listsort" handle=".handle" :group="{ name: 'people', pull: 'clone', put: false }"
+            ghost-class="ghost" item-key="id" class="row" @end="onEnd">
             <template #item="{ element }">
               <template v-if="element.name == 'phanloaikh'">
                 <div class="col-xl-3 col-lg-4">
@@ -157,10 +107,7 @@
                         </div>
                         <div class="d-flex align-items-center chart1">
                           <Chart v-bind="chart1" />
-                          <div
-                            id="legend-container-chart1"
-                            class="ml-3 w-100"
-                          ></div>
+                          <div id="legend-container-chart1" class="ml-3 w-100"></div>
                         </div>
                         <!--end /div-->
                       </div>
@@ -188,10 +135,7 @@
                         <div class="">
                           <div class="d-flex align-items-center chart2">
                             <Chart v-bind="chart2" />
-                            <div
-                              id="legend-container-chart2"
-                              class="ml-3 w-100"
-                            ></div>
+                            <div id="legend-container-chart2" class="ml-3 w-100"></div>
                           </div>
                         </div>
                         <!--end /div-->
@@ -209,29 +153,15 @@
                       <div class="card-body">
                         <div class="d-flex mt-0 mb-3">
                           <div class="header-title">Doanh thu</div>
-                          <div
-                            class="crypto-report-history d-flex justify-content-end ml-auto"
-                          >
+                          <div class="crypto-report-history d-flex justify-content-end ml-auto">
                             <ul class="nav" id="time">
                               <li class="nav-item">
-                                <a
-                                  class="nav-link"
-                                  :class="timetype == 'Month' ? 'active' : ''"
-                                  title="Month"
-                                  href="#"
-                                  @click="changeTimeType($event, 'Month')"
-                                  >Month</a
-                                >
+                                <a class="nav-link" :class="timetype == 'Month' ? 'active' : ''" title="Month" href="#"
+                                  @click="changeTimeType($event, 'Month')">Month</a>
                               </li>
                               <li class="nav-item">
-                                <a
-                                  class="nav-link"
-                                  :class="timetype == 'Year' ? 'active' : ''"
-                                  title="Year"
-                                  href="#"
-                                  @click="changeTimeType($event, 'Year')"
-                                  >Year</a
-                                >
+                                <a class="nav-link" :class="timetype == 'Year' ? 'active' : ''" title="Year" href="#"
+                                  @click="changeTimeType($event, 'Year')">Year</a>
                               </li>
                             </ul>
                             <div class="handle">
@@ -261,12 +191,8 @@
                         <div class="d-flex mt-0 mb-3">
                           <div class="header-title d-flex align-items-center">
                             Top
-                            <input
-                              class="form-control mx-2"
-                              style="width: 50px"
-                              v-model="limit_topsp"
-                              @change="load_topsp"
-                            />sản phẩm
+                            <input class="form-control mx-2" style="width: 50px" v-model="limit_topsp"
+                              @change="load_topsp" />sản phẩm
                           </div>
                           <div class="ml-auto">
                             <div class="handle">
@@ -281,21 +207,25 @@
                               <tr>
                                 <th class="border-top-0">Sản phẩm</th>
                                 <th class="border-top-0">Số lượng</th>
-                                <th class="border-top-0">Doanh thu</th>
+                                <th class="border-top-0 text-right">
+                                  Doanh thu
+                                </th>
                               </tr>
                               <!--end tr-->
                             </thead>
                             <tbody>
                               <tr v-for="tr of topsp" :key="tr">
                                 <td>
-                                  <router-link :to="'chitiet?mahh=' + tr.mahh">
-                                    {{ tr.tenhh }}
+                                  <router-link :to="'chitiet?mahh=' + tr.MAHH">
+                                    {{ tr.TENHH }}
                                   </router-link>
                                 </td>
                                 <td>
                                   {{ formatNumber(tr.soluong) }} {{ tr.dvt }}
                                 </td>
-                                <td>{{ formatNumber(tr.doanhthu) }}</td>
+                                <td class="text-right">
+                                  {{ formatNumber(tr.doanhthu) }}
+                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -318,12 +248,8 @@
                         <div class="d-flex mt-0 mb-3">
                           <div class="header-title d-flex align-items-center">
                             Top
-                            <input
-                              class="form-control mx-2"
-                              style="width: 50px"
-                              v-model="limit_topnhom"
-                              @change="load_topnhom"
-                            />nhóm hàng
+                            <input class="form-control mx-2" style="width: 50px" v-model="limit_topnhom"
+                              @change="load_topnhom" />nhóm hàng
                           </div>
                           <div class="ml-auto">
                             <div class="handle">
@@ -338,18 +264,22 @@
                             <thead class="thead-light">
                               <tr>
                                 <th class="border-top-0">Nhóm</th>
-                                <th class="border-top-0">Doanh thu</th>
+                                <th class="border-top-0 text-right">
+                                  Doanh thu
+                                </th>
                               </tr>
                               <!--end tr-->
                             </thead>
                             <tbody>
                               <tr v-for="tr of topnhom" :key="tr">
                                 <td>
-                                  <router-link :to="'chitiet?nhom=' + tr.nhom">
-                                    {{ tr.tennhom }}
+                                  <router-link :to="'chitiet?nhom=' + tr.NHOM">
+                                    {{ tr.TENNHOM }}
                                   </router-link>
                                 </td>
-                                <td>{{ formatNumber(tr.data) }}</td>
+                                <td class="text-right">
+                                  {{ formatNumber(tr.data) }}
+                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -381,10 +311,7 @@
                         </div>
                         <div class="d-flex align-items-center chart3">
                           <Chart v-bind="chart3" />
-                          <div
-                            id="legend-container-chart3"
-                            class="ml-3 w-100"
-                          ></div>
+                          <div id="legend-container-chart3" class="ml-3 w-100"></div>
                         </div>
                         <!--end /div-->
                       </div>
@@ -403,12 +330,8 @@
                         <div class="d-flex mt-0 mb-3">
                           <div class="header-title d-flex align-items-center">
                             Top
-                            <input
-                              class="form-control mx-2"
-                              style="width: 50px"
-                              v-model="limit_toptdv"
-                              @change="load_toptdv"
-                            />trình dược viên
+                            <input class="form-control mx-2" style="width: 50px" v-model="limit_toptdv"
+                              @change="load_toptdv" />trình dược viên
                           </div>
                           <div class="ml-auto">
                             <div class="handle">
@@ -423,19 +346,23 @@
                               <tr>
                                 <th class="border-top-0">Mã</th>
                                 <th class="border-top-0">Tên</th>
-                                <th class="border-top-0">Doanh thu</th>
+                                <th class="border-top-0 text-right">
+                                  Doanh thu
+                                </th>
                               </tr>
                               <!--end tr-->
                             </thead>
                             <tbody>
                               <tr v-for="tr of toptdv" :key="tr">
                                 <td>
-                                  {{ tr.matdv }}
+                                  {{ tr.MATDV }}
                                 </td>
                                 <td>
-                                  {{ tr.tentdv }}
+                                  {{ tr.TENTDV }}
                                 </td>
-                                <td>{{ formatNumber(tr.data) }}</td>
+                                <td class="text-right">
+                                  {{ formatNumber(tr.data) }}
+                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -458,12 +385,8 @@
                         <div class="d-flex mt-0 mb-3">
                           <div class="header-title d-flex align-items-center">
                             Top
-                            <input
-                              class="form-control mx-2"
-                              style="width: 50px"
-                              v-model="limit_toptinh"
-                              @change="load_toptinh"
-                            />tỉnh
+                            <input class="form-control mx-2" style="width: 50px" v-model="limit_toptinh"
+                              @change="load_toptinh" />tỉnh
                           </div>
                           <div class="ml-auto">
                             <div class="handle">
@@ -478,23 +401,25 @@
                               <tr>
                                 <th class="border-top-0">Mã</th>
                                 <th class="border-top-0">Tên</th>
-                                <th class="border-top-0">Doanh thu</th>
+                                <th class="border-top-0 text-right">
+                                  Doanh thu
+                                </th>
                               </tr>
                               <!--end tr-->
                             </thead>
                             <tbody>
                               <tr v-for="tr of toptinh" :key="tr">
                                 <td>
-                                  <router-link
-                                    :to="'chitiet?tinh=' + tr.matinh"
-                                  >
-                                    {{ tr.matinh }}
+                                  <router-link :to="'chitiet?tinh=' + tr.MATINH">
+                                    {{ tr.MATINH }}
                                   </router-link>
                                 </td>
                                 <td>
-                                  {{ tr.tentinh }}
+                                  {{ tr.TENTINH }}
                                 </td>
-                                <td>{{ formatNumber(tr.data) }}</td>
+                                <td class="text-right">
+                                  {{ formatNumber(tr.data) }}
+                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -517,12 +442,8 @@
                         <div class="d-flex mt-0 mb-3">
                           <div class="header-title d-flex align-items-center">
                             Top
-                            <input
-                              class="form-control mx-2"
-                              style="width: 50px"
-                              v-model="limit_topkh"
-                              @change="load_topkh"
-                            />khách hàng
+                            <input class="form-control mx-2" style="width: 50px" v-model="limit_topkh"
+                              @change="load_topkh" />khách hàng
                           </div>
                           <div class="ml-auto">
                             <div class="handle">
@@ -537,21 +458,25 @@
                               <tr>
                                 <th class="border-top-0">Mã</th>
                                 <th class="border-top-0">Tên</th>
-                                <th class="border-top-0">Doanh thu</th>
+                                <th class="border-top-0 text-right">
+                                  Doanh thu
+                                </th>
                               </tr>
                               <!--end tr-->
                             </thead>
                             <tbody>
                               <tr v-for="tr of topkh" :key="tr">
                                 <td>
-                                  <router-link :to="'chitiet?makh=' + tr.makh">
-                                    {{ tr.makh }}
+                                  <router-link :to="'chitiet?makh=' + tr.MAKH">
+                                    {{ tr.MAKH }}
                                   </router-link>
                                 </td>
                                 <td>
-                                  {{ tr.donvi }}
+                                  {{ tr.DONVI }}
                                 </td>
-                                <td>{{ formatNumber(tr.data) }}</td>
+                                <td class="text-right">
+                                  {{ formatNumber(tr.data) }}
+                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -573,12 +498,8 @@
                         <div class="d-flex mt-0 mb-3">
                           <div class="header-title d-flex align-items-center">
                             Top
-                            <input
-                              class="form-control mx-2"
-                              style="width: 50px"
-                              v-model="limit_toptonkho"
-                              @change="load_tonkho"
-                            />
+                            <input class="form-control mx-2" style="width: 50px" v-model="limit_toptonkho"
+                              @change="load_tonkho" />
                             tồn kho
                           </div>
                           <div class="ml-auto">
@@ -601,10 +522,10 @@
                             <tbody>
                               <tr v-for="tr of tonkho" :key="tr">
                                 <td>
-                                  {{ tr.mahh }}
+                                  {{ tr.MAHH }}
                                 </td>
                                 <td>
-                                  {{ tr.tenhh }}
+                                  {{ tr.TENHH }}
                                 </td>
                                 <td>
                                   {{ formatNumber(tr.soluong_ton) }}

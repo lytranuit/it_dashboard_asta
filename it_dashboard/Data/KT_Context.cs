@@ -18,9 +18,11 @@ namespace Vue.Data
         }
 
 
+        public DbSet<TBL_DANHMUCKHO> TBL_DANHMUCKHO { get; set; }
         public DbSet<MaNhomModel> MaNhomModel { get; set; }
         public DbSet<TinhModel> TinhModel { get; set; }
         public DbSet<SanphamModel> SanphamModel { get; set; }
+        public DbSet<TBL_DANHMUCHANGHOAModel> TBL_DANHMUCHANGHOAModel { get; set; }
         public DbSet<KhachhangModel> KhachhangModel { get; set; }
         public DbSet<RawDataModel> RawDataModel { get; set; }
         public DbSet<TonkhoModel> TonkhoModel { get; set; }

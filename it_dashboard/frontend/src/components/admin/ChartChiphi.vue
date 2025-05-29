@@ -3,27 +3,16 @@
     <div class="card">
       <div class="card-body">
         <div class="row">
-          <div class="col-md mb-2 text-center">
+          <div class="col-md mb-2 text-left">
             <h4 class="header-title mb-0 mr-3">Chi phí</h4>
           </div>
           <div class="col-md mb-2 text-center">
-            <Calendar
-              v-model="dates"
-              selectionMode="range"
-              :manualInput="false"
-              inputClass="form-control-sm"
-              @hide="changeDate"
-              dateFormat="yy/mm/dd"
-            />
+            <Calendar v-model="dates" selectionMode="range" :manualInput="false" inputClass="form-control-sm"
+              @hide="changeDate" dateFormat="dd/mm/yy" />
           </div>
-          <div class="col-md mb-2 text-center">
-            <SelectButton
-              v-model="type_chiphi"
-              :options="['Day', 'Week', 'Month', 'Year']"
-              aria-labelledby="basic"
-              :pt="{ button: 'form-control-sm' }"
-              @change="changeDate"
-            />
+          <div class="col-md mb-2 text-right">
+            <SelectButton v-model="type_chiphi" :options="['Day', 'Week', 'Month', 'Year']" aria-labelledby="basic"
+              :pt="{ button: 'form-control-sm' }" @change="changeDate" />
           </div>
         </div>
         <div class="">

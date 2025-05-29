@@ -25,7 +25,79 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xl-12 col-lg-12">
+    <div class="col-xl-3">
+      <BlockUI :blocked="waiting">
+        <div class="card">
+          <div class="card-body">
+            <span class="font-weight-bold" style="color: blue; font-size: 15px"
+              >Tổng số sản phẩm</span
+            >
+            <h3 class="my-3">{{ sosanpham }}</h3>
+          </div>
+          <!--end card-body-->
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <span class="font-weight-bold" style="color: green; font-size: 15px"
+              >Sản phẩm hoàn thành</span
+            >
+            <h3 class="my-3">{{ sosanphamht }}</h3>
+          </div>
+          <!--end card-body-->
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <span class="font-weight-bold" style="color: red; font-size: 15px"
+              >Sản phẩm chưa hoàn thành</span
+            >
+            <h3 class="my-3">{{ sosanphamcht }}</h3>
+          </div>
+          <!--end card-body-->
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex mt-0 mb-3">
+              <div class="header-title d-flex align-items-center">
+                Top
+                <input
+                  class="form-control mx-2"
+                  style="width: 50px"
+                  v-model="limit_topsp"
+                  @change="load_topsp"
+                />sản phẩm
+              </div>
+              <div class="ml-auto"></div>
+            </div>
+            <div class="">
+              <!-- <Chart type="bar" :data="chartData" :options="chartOptions" /> -->
+              <table class="table mb-0" id="table_user">
+                <thead class="thead-light">
+                  <tr>
+                    <th class="border-top-0">Sản phẩm</th>
+                    <th class="border-top-0 text-right" style="width: 120px">
+                      Số lượng
+                    </th>
+                  </tr>
+                  <!--end tr-->
+                </thead>
+                <tbody>
+                  <tr v-for="tr of topsp" :key="tr">
+                    <td>{{ tr.MAHH_GOC_1 }}-{{ tr.TENHH }}</td>
+                    <td class="text-right">
+                      {{ formatNumber(tr.SOLUONG_NHAP) }} {{ tr.DVT_NHAP }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--end table-->
+            </div>
+            <!--end /div-->
+          </div>
+          <!--end card-body-->
+        </div>
+      </BlockUI>
+    </div>
+    <div class="col-xl-9 col-lg-12">
       <BlockUI :blocked="waiting">
         <div class="card">
           <div class="card-body">
@@ -115,7 +187,12 @@
                       @keydown.enter="filterCallback()"
                     /> </template
                 ></Column>
-                <Column field="SOLUONG_NHAP" header="Số lượng" sortable>
+                <Column
+                  field="SOLUONG_NHAP"
+                  header="Số lượng"
+                  sortable
+                  class="text-right"
+                >
                   <template #body="{ data }">
                     {{ formatNumber(data.SOLUONG_NHAP || 0, 0) }}
                     {{ data.DVT_NHAP }}
@@ -193,12 +270,14 @@ import Api from "../../api/Api";
 import { formatDate, formatNumber } from "../../utilities/util";
 import { FilterMatchMode } from "primevue/api";
 import moment from "moment";
+import { computed } from "vue";
 
 const view = ref("nam");
 const dates = ref([
   new moment().startOf("year").toDate(),
   new moment().endOf("year").toDate(),
 ]);
+const limit_topsp = ref(5);
 const waiting = ref();
 const tinhtrangsanpham = ref([]);
 const tong_colo = ref();
@@ -210,6 +289,50 @@ const filters = ref({
   MALO_GOC: { value: null, matchMode: FilterMatchMode.CONTAINS },
   COLO_GOC: { value: null, matchMode: FilterMatchMode.CONTAINS },
   HOANTHANH: { value: null, matchMode: FilterMatchMode.CONTAINS },
+});
+const sosanpham = computed(() => {
+  // Đếm số lượng giá trị duy nhất của MAHH_GOC_1
+  const uniqueCount = tinhtrangsanpham.value.length;
+  return uniqueCount;
+});
+const sosanphamht = computed(() => {
+  // Đếm số lượng giá trị duy nhất của MAHH_GOC_1
+  const uniqueCount = tinhtrangsanpham.value.filter(
+    (item) => item.HOANTHANH == 1
+  ).length;
+  return uniqueCount;
+});
+const sosanphamcht = computed(() => {
+  // Đếm số lượng giá trị duy nhất của MAHH_GOC_1
+  const uniqueCount = tinhtrangsanpham.value.filter(
+    (item) => item.HOANTHANH != 1
+  ).length;
+  return uniqueCount;
+});
+const topsp = computed(() => {
+  const groupedData = tinhtrangsanpham.value.reduce((acc, item) => {
+    const key = `${item.MAHH_GOC_1}-${item.TENHH}`;
+
+    if (!acc[key]) {
+      acc[key] = {
+        MAHH_GOC_1: item.MAHH_GOC_1,
+        TENHH: item.TENHH,
+        SOLUONG_NHAP: 0,
+        DVT_NHAP: item.DVT_NHAP,
+      };
+    }
+
+    acc[key].SOLUONG_NHAP += item.SOLUONG_NHAP ?? 0;
+
+    return acc;
+  }, {});
+
+  // Chuyển object thành mảng kết quả
+  const result = Object.values(groupedData)
+    .sort((a, b) => b.SOLUONG_NHAP - a.SOLUONG_NHAP) // Sắp xếp giảm dần theo TOTAL_SONGAY
+    .slice(0, limit_topsp.value); // Lấy 5 sản phẩm có tổng số ngày cao nhất
+
+  return result;
 });
 const load_tinhtrangsanpham = () => {
   waiting.value = true;
@@ -226,6 +349,19 @@ const load_tinhtrangsanpham = () => {
 };
 const tong = (da) => {
   var filteredValue = da.filteredValue;
+  filteredValue = filteredValue.reduce((acc, item) => {
+    const key = `${item.MAHH_GOC_1}-${item.COLO_GOC}`;
+
+    if (!acc[key]) {
+      acc[key] = {
+        MAHH_GOC_1: item.MAHH_GOC_1,
+        COLO_GOC: item.COLO_GOC,
+      };
+    }
+    return acc;
+  }, {});
+  console.log(filteredValue);
+  filteredValue = Object.values(filteredValue);
   tong_colo.value = filteredValue.reduce((a, b) => a + b.COLO_GOC, 0);
   // console.log(tong_colo.value);
 };

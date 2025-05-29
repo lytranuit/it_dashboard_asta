@@ -18,14 +18,24 @@ const formatTime = (sec) => {
     }
     return formatted;
 };
-const formatPrice = (value) => {
-    let val = (value / 1).toFixed(2).replace(",", ".");
-    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const formatPrice = (value, min = 2) => {
+    // console.log(value)
+    if (value == null) return '';
+    let formattedNumber = new Intl.NumberFormat('en-US', { maximumFractionDigits: min }).format(value);
+    formattedNumber = formattedNumber.replace(/,/g, '@');
+    formattedNumber = formattedNumber.replace(/\./g, ',');
+    formattedNumber = formattedNumber.replace(/\@/g, ' ');
+    return formattedNumber;
 };
 
 const formatNumber = (value, min) => {
-    let val = (value / 1).toFixed(min).replace(",", ".");
-    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    // console.log(value)
+    if (value == null) return '';
+    let formattedNumber = new Intl.NumberFormat('en-US', { maximumFractionDigits: min }).format(value);
+    formattedNumber = formattedNumber.replace(/,/g, '@');
+    formattedNumber = formattedNumber.replace(/\./g, ',');
+    formattedNumber = formattedNumber.replace(/\@/g, '.');
+    return formattedNumber;
 };
 const formatDate = (value, fomat = "YYYY-MM-DD") => {
     if (!value) return "";

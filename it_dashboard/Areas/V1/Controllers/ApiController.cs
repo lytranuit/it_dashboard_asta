@@ -1,6 +1,7 @@
 ﻿
 
 using iText.StyledXmlParser.Css.Resolve.Shorthand.Impl;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
@@ -142,6 +143,12 @@ namespace it_template.Areas.V1.Controllers
             });
         }
 
+        public async Task<JsonResult> kho()
+        {
+            var Query = _ktcontext.TBL_DANHMUCKHO.Where(d => 1 == 1);
+            var All = Query.ToList();
+            return Json(All);
+        }
         public async Task<JsonResult> list_sanpham()
         {
             var list = _ktcontext.SanphamModel.FromSqlRaw($"SELECT MAHH,TENHH FROM DTA_CT_HOADON_XUAT where MAHH != '' group by MAHH,TENHH").OrderBy(d => d.MAHH).ToList();
@@ -237,7 +244,10 @@ namespace it_template.Areas.V1.Controllers
             }).ToList();
             var phanloaidonvi = new { labels = data_phanloaidonvi.Select(d => d.label).ToList(), datasets = new List<Chart>() { new Chart { label = "Doanh thu", data = data_phanloaidonvi.Select(d => d.data).ToList() } } };
 
-            return Json(new { thanhtien = thanhtien, soluong = soluong, soluongsp = soluongsp, phanloaikh = phanloaikh, phanloai = phanloai, phanloaidonvi = phanloaidonvi });
+            return Json(new { thanhtien = thanhtien, soluong = soluong, soluongsp = soluongsp, phanloaikh = phanloaikh, phanloai = phanloai, phanloaidonvi = phanloaidonvi }, new System.Text.Json.JsonSerializerOptions()
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            });
         }
 
         [HttpPost]
@@ -289,7 +299,10 @@ namespace it_template.Areas.V1.Controllers
                 soluong = group.Sum(d => d.SOLUONG)
             }).OrderByDescending(d => d.doanhthu).Take(limit).ToList();
 
-            return Json(new { data = data });
+            return Json(new { data = data }, new System.Text.Json.JsonSerializerOptions()
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            });
         }
 
         [HttpPost]
@@ -339,7 +352,10 @@ namespace it_template.Areas.V1.Controllers
                 data = group.Sum(d => d.DOANHTHU)
             }).OrderByDescending(d => d.data).Take(limit).ToList();
 
-            return Json(new { data = data });
+            return Json(new { data = data }, new System.Text.Json.JsonSerializerOptions()
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            });
         }
 
         [HttpPost]
@@ -388,7 +404,10 @@ namespace it_template.Areas.V1.Controllers
                 data = group.Sum(d => d.DOANHTHU)
             }).OrderByDescending(d => d.data).Take(limit).ToList();
 
-            return Json(new { data = data });
+            return Json(new { data = data }, new System.Text.Json.JsonSerializerOptions()
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            });
         }
 
         [HttpPost]
@@ -438,7 +457,10 @@ namespace it_template.Areas.V1.Controllers
                 data = group.Sum(d => d.DOANHTHU)
             }).OrderByDescending(d => d.data).Take(limit).ToList();
 
-            return Json(new { data = data });
+            return Json(new { data = data }, new System.Text.Json.JsonSerializerOptions()
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            });
         }
 
 
@@ -489,7 +511,10 @@ namespace it_template.Areas.V1.Controllers
                 data = group.Sum(d => d.DOANHTHU)
             }).OrderByDescending(d => d.data).Take(limit).ToList();
 
-            return Json(new { data = data });
+            return Json(new { data = data }, new System.Text.Json.JsonSerializerOptions()
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            });
         }
 
 
@@ -619,20 +644,79 @@ namespace it_template.Areas.V1.Controllers
                 soluong = group.Sum(d => d.SOLUONG)
             }).OrderByDescending(d => d.doanhthu).ToList();
 
-            return Json(new { data = data });
+            return Json(new { data = data }, new System.Text.Json.JsonSerializerOptions()
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            });
         }
 
 
-        public async Task<JsonResult> tonkho(int limit = 5)
+        public async Task<JsonResult> tonkho(bool is_chitiet, List<string> kho)
         {
             var current = DateTime.Now;
             var thang = current.Month;
             var nam = current.Year;
             var tungay = current.ToString("yyyy-MM-dd");
-            var sqla = $"EXECUTE laythongtintonkho_tatca_tatca @thang = {thang}, @nam = {nam}, @MAHH = '',@tungay='{tungay}',@soluong=0 ";
-            Console.WriteLine(sqla);
-            var data = _ktcontext.TonkhoModel.FromSqlRaw($"{sqla}").ToList().Where(d => d.MANHOM != "QT" && d.soluong_ton > 0).OrderByDescending(d => d.soluong_ton).Take(limit).ToList();
-            return Json(new { data = data });
+            //var sqla = $"EXECUTE laythongtintonkho_tatca_tatca @thang = {thang}, @nam = {nam}, @MAHH = '',@tungay='{tungay}',@soluong=0 ";
+
+            //Console.WriteLine(sqla);
+            //var data = _ktcontext.TonkhoModel.FromSqlRaw($"{sqla}").ToList().Where(d => d.MANHOM != "QT" && d.soluong_ton > 0).OrderByDescending(d => d.soluong_ton).Take(limit).ToList();
+            var datapost = new List<ThanhphamInventory>();
+
+            var customerData = _qlsxcontext.TBL_THANHPHAM_KIENHANGModel.Where(d => d.soluong != 0 && d.deleted_at == null);
+            if (kho != null && kho.Count() > 0)
+            {
+                customerData = customerData.Where(d => kho.Contains(d.makho));
+            }
+            datapost = customerData.GroupBy(d => new { d.mahh, d.malo, d.handung, d.makho })
+                .Select(d => new ThanhphamInventory()
+                {
+                    mahh = d.Key.mahh,
+                    tenhh = d.FirstOrDefault().tenhh,
+                    malo = d.Key.malo,
+                    handung = d.Key.handung,
+                    ngaysx = d.FirstOrDefault().ngaysx,
+                    quicach = d.FirstOrDefault().quicach,
+                    makho = d.Key.makho,
+                    loaihh = d.FirstOrDefault().loaihh,
+                    ngayxuatxuong = d.FirstOrDefault().ngayxuatxuong,
+                    dvt = d.FirstOrDefault().dvt,
+                    soluong = d.Sum(d => d.soluong),
+
+                    //packages = d.OrderBy(d => d.created_at).ToList()
+                }).ToList();
+
+            foreach (var da in datapost)
+            {
+                var sp = _ktcontext.TBL_DANHMUCHANGHOAModel.Where(d => d.mahh == da.mahh).FirstOrDefault();
+                if (sp != null && sp.sl3 > 0)
+                {
+                    da.sothung = da.soluong / sp.sl3;
+                    da.dongia = sp.giaban;
+                    da.thanhtien = da.dongia * da.soluong;
+                }
+            }
+            datapost = datapost.GroupBy(d => new { d.mahh, d.tenhh }).Select(d => new ThanhphamInventory()
+            {
+                mahh = d.Key.mahh,
+                tenhh = d.Key.tenhh,
+                loaihh = d.FirstOrDefault().loaihh,
+                dvt = d.FirstOrDefault().dvt,
+                soluong = d.Sum(d => d.soluong),
+                sothung = d.Sum(d => d.sothung),
+                dongia = d.FirstOrDefault().dongia,
+                thanhtien = d.Sum(d => d.soluong) * d.FirstOrDefault().dongia,
+                chitiet = d.ToList()
+                //packages = d.OrderBy(d => d.created_at).ToList()
+            }).ToList();
+
+            datapost = datapost.OrderByDescending(d => d.thanhtien).ThenBy(d => d.mahh).ThenBy(d => d.handung).ToList();
+            return Json(new { data = datapost }, new System.Text.Json.JsonSerializerOptions()
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+
+            });
         }
         public async Task<JsonResult> tinhtrangsanpham(List<DateTime> dates, string search)
         {
@@ -659,7 +743,8 @@ namespace it_template.Areas.V1.Controllers
             var denngay = dates[1].ToString("yyyy-MM-dd");
             var sqla = $"EXECUTE BI_DODANG_HOANTHANH @tungay='{tungay}',@dengay='{denngay}' ";
             //Console.WriteLine(sqla);
-            var data = _qlsxcontext.Tinhtrangsanpham.FromSqlRaw($"{sqla}").ToList().Where(d => d.COLO_GOC > 0).OrderByDescending(d => d.HOANTHANH).ToList();
+            var data = _qlsxcontext.Tinhtrangsanpham.FromSqlRaw($"{sqla}").ToList();
+            data = data.Where(d => d.COLO_GOC > 0).OrderByDescending(d => d.HOANTHANH).ToList();
             if (search != null && search != "")
             {
                 data = data.Where(d => d.MAHH_GOC_1.Contains(search) || d.TENHH.Contains(search) || d.MALO_GOC.Contains(search)).ToList();
@@ -692,6 +777,9 @@ namespace it_template.Areas.V1.Controllers
         public bool fill { get; set; }
         public string type { get; set; }
         public string yAxisID { get; set; }
+        public string stack { get; set; }
+        public string borderColor { get; set; }
+        public string backgroundColor { get; set; }
     }
     public class Chart1
     {
@@ -699,5 +787,34 @@ namespace it_template.Areas.V1.Controllers
         public string label { get; set; }
         public double data { get; set; }
         public double data_nv { get; set; }
+        public double data_nghiviec { get; set; }
+        public double tile { get; set; }
+        public int? year { get; set; }
+        public int? month { get; set; }
+    }
+    public class ThanhphamInventory
+    {
+        public string mahh { get; set; }
+        public string tenhh { get; set; }
+        public string malo { get; set; }
+        public DateTime? handung { get; set; }
+        public string sopkn { get; set; }
+        public DateTime? ngaysx { get; set; }
+        public string quicach { get; set; }
+        public string dvt { get; set; }
+        public string phanloai { get; set; }
+        public decimal? soluong { get; set; }
+        public decimal? soluong_chapnhan { get; set; }
+        public string makho { get; set; }
+        public string loaihh { get; set; }
+        public DateTime? ngayxuatxuong { get; set; }
+        public List<TBL_THANHPHAM_KIENHANGModel> packages { get; set; }
+        public int thungnguyen { get; set; }
+        public int thungle { get; set; }
+        public decimal? sothung { get; set; }
+        public decimal? dongia { get; set; }
+        public decimal? thanhtien { get; set; }
+
+        public List<ThanhphamInventory>? chitiet { get; set; }
     }
 }

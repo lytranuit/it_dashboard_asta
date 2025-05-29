@@ -12,6 +12,15 @@ export default {
       })
       .then((res) => res.data);
   },
+  nghiviec(params) {
+    return repository
+      .post(`/v1/${resoure}/nghiviec`, params, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => res.data);
+  },
   get() {
     return repository.get(`/v1/${resoure}/get`).then((res) => res.data);
   }, 

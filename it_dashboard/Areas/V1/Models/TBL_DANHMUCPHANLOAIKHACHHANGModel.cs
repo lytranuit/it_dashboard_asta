@@ -10,12 +10,17 @@ using Newtonsoft.Json;
 namespace Vue.Models
 {
 
-	[Table("TBL_DANHMUCPHANLOAIKHACHHANG")]
-	public class TBL_DANHMUCPHANLOAIKHACHHANGModel
-	{
-		[Key]
-		public string phanloaikhachhang { get; set; }
+    [Table("TBL_DANHMUCHANGHOA")]
+    public class TBL_DANHMUCHANGHOAModel
+    {
+        [Key]
+        public string mahh { get; set; }
 
-		public string? tenphanloai { get; set; }
-	}
+        public string? tenhh { get; set; }
+        public string? nhom { get; set; }
+        public decimal? sl1 { get; set; }
+        public decimal? sl2 { get; set; }
+        public decimal? sl3 { get; set; }
+        public decimal? giaban { get; set; }
+    }
 }
