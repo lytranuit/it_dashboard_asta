@@ -10,14 +10,8 @@
           <b>Thời gian</b>
           <div>
             <div class="d-flex align-items-center" style="gap: 10px">
-              <Calendar
-                v-model="dates"
-                selectionMode="range"
-                class="p-inputtext-sm w-100"
-                :manualInput="true"
-                dateFormat="dd/mm/yy"
-                @hide="load_tinhtrangsanpham"
-              />
+              <Calendar v-model="dates" selectionMode="range" class="p-inputtext-sm w-100" :manualInput="true"
+                dateFormat="dd/mm/yy" @hide="load_tinhtrangsanpham" />
             </div>
           </div>
         </div>
@@ -29,27 +23,21 @@
       <BlockUI :blocked="waiting">
         <div class="card">
           <div class="card-body">
-            <span class="font-weight-bold" style="color: blue; font-size: 15px"
-              >Tổng số sản phẩm</span
-            >
+            <span class="font-weight-bold" style="color: blue; font-size: 15px">Tổng số sản phẩm</span>
             <h3 class="my-3">{{ sosanpham }}</h3>
           </div>
           <!--end card-body-->
         </div>
         <div class="card">
           <div class="card-body">
-            <span class="font-weight-bold" style="color: green; font-size: 15px"
-              >Sản phẩm hoàn thành</span
-            >
+            <span class="font-weight-bold" style="color: green; font-size: 15px">Sản phẩm hoàn thành</span>
             <h3 class="my-3">{{ sosanphamht }}</h3>
           </div>
           <!--end card-body-->
         </div>
         <div class="card">
           <div class="card-body">
-            <span class="font-weight-bold" style="color: red; font-size: 15px"
-              >Sản phẩm chưa hoàn thành</span
-            >
+            <span class="font-weight-bold" style="color: red; font-size: 15px">Sản phẩm chưa hoàn thành</span>
             <h3 class="my-3">{{ sosanphamcht }}</h3>
           </div>
           <!--end card-body-->
@@ -59,12 +47,8 @@
             <div class="d-flex mt-0 mb-3">
               <div class="header-title d-flex align-items-center">
                 Top
-                <input
-                  class="form-control mx-2"
-                  style="width: 50px"
-                  v-model="limit_topsp"
-                  @change="load_topsp"
-                />sản phẩm
+                <input class="form-control mx-2" style="width: 50px" v-model="limit_topsp" @change="load_topsp" />sản
+                phẩm
               </div>
               <div class="ml-auto"></div>
             </div>
@@ -107,103 +91,47 @@
               </div>
             </div>
             <div class="">
-              <DataTable
-                :value="tinhtrangsanpham"
-                paginator
-                :rows="10"
-                :rowsPerPageOptions="[10, 20, 50, 100]"
-                :globalFilterFields="['MAHH_GOC_1', 'TENHH']"
-                v-model:filters="filters"
-                filterDisplay="menu"
-                @filter="tong"
-              >
+              <DataTable :value="tinhtrangsanpham" paginator :rows="10" :rowsPerPageOptions="[10, 20, 50, 100]"
+                :globalFilterFields="['MAHH_GOC_1', 'TENHH']" v-model:filters="filters" filterDisplay="menu"
+                @filter="tong">
                 <template #header>
                   <div class="d-flex justify-content-end align-items-center">
-                    <span class="mr-2"
-                      >Tổng số: {{ tinhtrangsanpham.length }}</span
-                    >
-                    <InputText
-                      v-model="search"
-                      placeholder="Tìm kiếm"
-                      class="p-inputtext-sm"
-                      @change="load_tinhtrangsanpham()"
-                    />
+                    <span class="mr-2">Tổng số: {{ tinhtrangsanpham.length }}</span>
+                    <InputText v-model="search" placeholder="Tìm kiếm" class="p-inputtext-sm"
+                      @change="load_tinhtrangsanpham()" />
                   </div>
                 </template>
-                <Column
-                  field="MAHH_GOC_1"
-                  header="Mã sản phẩm"
-                  footer="Tổng"
-                  sortable
-                  :showFilterMatchModes="false"
-                >
+                <Column field="MAHH_GOC_1" header="Mã sản phẩm" footer="Tổng" sortable :showFilterMatchModes="false">
                   <template #filter="{ filterModel, filterCallback }">
-                    <InputText
-                      v-model="filterModel.value"
-                      type="text"
-                      @keydown.enter="filterCallback()"
-                    /> </template
-                ></Column>
-                <Column
-                  field="TENHH"
-                  header="Tên sản phẩm"
-                  sortable
-                  :showFilterMatchModes="false"
-                >
+                    <InputText v-model="filterModel.value" type="text" @keydown.enter="filterCallback()" />
+                  </template>
+                </Column>
+                <Column field="TENHH" header="Tên sản phẩm" sortable :showFilterMatchModes="false">
                   <template #filter="{ filterModel, filterCallback }">
-                    <InputText
-                      v-model="filterModel.value"
-                      type="text"
-                      @keydown.enter="filterCallback()"
-                    /> </template
-                ></Column>
-                <Column
-                  field="MALO_GOC"
-                  header="Số lô"
-                  sortable
-                  :showFilterMatchModes="false"
-                >
+                    <InputText v-model="filterModel.value" type="text" @keydown.enter="filterCallback()" />
+                  </template>
+                </Column>
+                <Column field="MALO_GOC" header="Số lô" sortable :showFilterMatchModes="false">
                   <template #filter="{ filterModel, filterCallback }">
-                    <InputText
-                      v-model="filterModel.value"
-                      type="text"
-                      @keydown.enter="filterCallback()"
-                    /> </template
-                ></Column>
-                <Column
-                  field="COLO_GOC"
-                  header="Cỡ lô"
-                  :footer="formatNumber(tong_colo || 0, 0)"
-                  sortable
-                  :showFilterMatchModes="false"
-                >
+                    <InputText v-model="filterModel.value" type="text" @keydown.enter="filterCallback()" />
+                  </template>
+                </Column>
+                <Column field="COLO_GOC" header="Cỡ lô" :footer="formatNumber(tong_colo || 0, 0)" sortable
+                  :showFilterMatchModes="false">
                   <template #body="{ data }">
                     {{ formatNumber(data.COLO_GOC || 0, 0) }}
                   </template>
                   <template #filter="{ filterModel, filterCallback }">
-                    <InputText
-                      v-model="filterModel.value"
-                      type="text"
-                      @keydown.enter="filterCallback()"
-                    /> </template
-                ></Column>
-                <Column
-                  field="SOLUONG_NHAP"
-                  header="Số lượng"
-                  sortable
-                  class="text-right"
-                >
+                    <InputText v-model="filterModel.value" type="text" @keydown.enter="filterCallback()" />
+                  </template>
+                </Column>
+                <Column field="SOLUONG_NHAP" header="Số lượng" sortable class="text-right">
                   <template #body="{ data }">
                     {{ formatNumber(data.SOLUONG_NHAP || 0, 0) }}
                     {{ data.DVT_NHAP }}
                   </template>
                 </Column>
-                <Column
-                  field="HOANTHANH"
-                  header="Trạng thái"
-                  sortable
-                  :showFilterMatchModes="false"
-                >
+                <Column field="HOANTHANH" header="Trạng thái" sortable :showFilterMatchModes="false">
                   <template #body="{ data }">
                     <template v-if="data.HOANTHANH == 1">
                       <i class="far fa-check-circle text-success"></i> Hoàn
@@ -216,17 +144,10 @@
                   </template>
                   <template #filter="{ filterModel, filterCallback }">
                     <div style="width: 300px">
-                      <SelectButton
-                        v-model="filterModel.value"
-                        :options="[
-                          { name: 'Hoàn thành', value: true },
-                          { name: 'Chưa hoàn thành', value: false },
-                        ]"
-                        optionLabel="name"
-                        optionValue="value"
-                        @change="filterCallback()"
-                        aria-labelledby="basic"
-                      />
+                      <SelectButton v-model="filterModel.value" :options="[
+                        { name: 'Hoàn thành', value: true },
+                        { name: 'Chưa hoàn thành', value: false },
+                      ]" optionLabel="name" optionValue="value" @change="filterCallback()" aria-labelledby="basic" />
                     </div>
                   </template>
                 </Column>
@@ -360,7 +281,7 @@ const tong = (da) => {
     }
     return acc;
   }, {});
-  console.log(filteredValue);
+  // console.log(filteredValue);
   filteredValue = Object.values(filteredValue);
   tong_colo.value = filteredValue.reduce((a, b) => a + b.COLO_GOC, 0);
   // console.log(tong_colo.value);

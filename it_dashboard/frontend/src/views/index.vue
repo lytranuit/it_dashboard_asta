@@ -117,6 +117,64 @@
                   <!--end card-->
                 </div>
               </template>
+              <template v-else-if="element.name == 'doanhso'">
+                <div class="col-xl-3 col-lg-4">
+                  <BlockUI :blocked="list_waiting.HomeBadge">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="d-flex mt-0 mb-3">
+                          <h4 class="header-title mt-0 mb-3">
+                            Doanh số
+                          </h4>
+                          <div class="ml-auto">
+                            <div class="handle">
+                              <i class="fas fa-arrows-alt"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="">
+                          <div class="d-flex align-items-center chart5">
+                            <Chart v-bind="chart5" />
+                            <div id="legend-container-chart5" class="ml-3 w-100"></div>
+                          </div>
+                        </div>
+                        <!--end /div-->
+                      </div>
+                      <!--end card-body-->
+                    </div>
+                  </BlockUI>
+                  <!--end card-->
+                </div>
+              </template>
+              <template v-else-if="element.name == 'dieuchinhgiam'">
+                <div class="col-xl-3 col-lg-4">
+                  <BlockUI :blocked="list_waiting.HomeBadge">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="d-flex mt-0 mb-3">
+                          <h4 class="header-title mt-0 mb-3">
+                            Điều chỉnh giảm
+                          </h4>
+                          <div class="ml-auto">
+                            <div class="handle">
+                              <i class="fas fa-arrows-alt"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="">
+                          <div class="d-flex align-items-center chart6">
+                            <Chart v-bind="chart6" />
+                            <div id="legend-container-chart6" class="ml-3 w-100"></div>
+                          </div>
+                        </div>
+                        <!--end /div-->
+                      </div>
+                      <!--end card-body-->
+                    </div>
+                  </BlockUI>
+                  <!--end card-->
+                </div>
+              </template>
               <template v-else-if="element.name == 'phanloai'">
                 <div class="col-xl-3 col-lg-4">
                   <BlockUI :blocked="list_waiting.HomeBadge">
@@ -597,11 +655,17 @@ const listsort = ref([
   {
     name: "phanloaikh",
   },
+  // {
+  //   name: "phanloai",
+  // },
+  // {
+  //   name: "phanloaidonvi",
+  // },
   {
-    name: "phanloai",
+    name: "doanhso",
   },
   {
-    name: "phanloaidonvi",
+    name: "dieuchinhgiam",
   },
   {
     name: "toptinh",
@@ -726,6 +790,44 @@ const chart4 = ref({
   },
   height: 300,
 });
+
+const chart5 = ref({
+  type: "pie",
+  options: {
+    responsive: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      htmlLegend: {
+        // ID of the container to put the legend in
+        containerID: "legend-container-chart5",
+      },
+    },
+  },
+  plugins: [htmlLegendPlugin],
+  height: 300,
+});
+
+
+const chart6 = ref({
+  type: "pie",
+  options: {
+    responsive: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      htmlLegend: {
+        // ID of the container to put the legend in
+        containerID: "legend-container-chart6",
+      },
+    },
+  },
+  plugins: [htmlLegendPlugin],
+  height: 300,
+});
+
 const topsp = ref([]);
 const topnhom = ref([]);
 const toptdv = ref([]);
@@ -770,6 +872,8 @@ const refresh = () => {
     chart1.value.data = res.phanloaikh;
     chart2.value.data = res.phanloai;
     chart3.value.data = res.phanloaidonvi;
+    chart5.value.data = res.doanhso;
+    chart6.value.data = res.dieuchinhgiam;
   });
   load_topsp();
   load_topnhom();
@@ -905,6 +1009,12 @@ onMounted(() => {
   chart3.value.height = chart3.value.width;
 
   chart4.value.width = $(".chart4").width();
+
+  chart5.value.width = ($(".chart5").width() * 65) / 100;
+  chart5.value.height = chart5.value.width;
+
+  chart6.value.width = ($(".chart6").width() * 65) / 100;
+  chart6.value.height = chart6.value.width;
 });
 watch(dates, (count, prevCount) => {
   saveDates();

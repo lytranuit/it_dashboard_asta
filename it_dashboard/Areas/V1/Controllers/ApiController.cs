@@ -244,7 +244,22 @@ namespace it_template.Areas.V1.Controllers
             }).ToList();
             var phanloaidonvi = new { labels = data_phanloaidonvi.Select(d => d.label).ToList(), datasets = new List<Chart>() { new Chart { label = "Doanh thu", data = data_phanloaidonvi.Select(d => d.data).ToList() } } };
 
-            return Json(new { thanhtien = thanhtien, soluong = soluong, soluongsp = soluongsp, phanloaikh = phanloaikh, phanloai = phanloai, phanloaidonvi = phanloaidonvi }, new System.Text.Json.JsonSerializerOptions()
+            var data_doanhso = list.Where(d => d.DOANHTHU > 0).GroupBy(d => 1).Select(group => new
+            {
+                label = "Doanh số",
+                data = group.Sum(e => e.DOANHTHU)
+            }).ToList();
+            var doanhso = new { labels = data_doanhso.Select(d => d.label).ToList(), datasets = new List<Chart>() { new Chart { label = "Doanh số", data = data_doanhso.Select(d => d.data).ToList() } } };
+
+            var data_dieuchinhgiam = list.Where(d => d.DOANHTHU < 0).GroupBy(d => 1).Select(group => new
+            {
+                label = "Điều chỉnh giảm",
+                data = group.Sum(e => e.DOANHTHU)
+            }).ToList();
+            var dieuchinhgiam = new { labels = data_dieuchinhgiam.Select(d => d.label).ToList(), datasets = new List<Chart>() { new Chart { label = "Điều chỉnh giảm", data = data_dieuchinhgiam.Select(d => d.data).ToList() } } };
+
+
+            return Json(new { thanhtien = thanhtien, soluong = soluong, soluongsp = soluongsp, phanloaikh = phanloaikh, phanloai = phanloai, phanloaidonvi = phanloaidonvi, doanhso = doanhso, dieuchinhgiam = dieuchinhgiam }, new System.Text.Json.JsonSerializerOptions()
             {
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             });
